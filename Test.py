@@ -7,5 +7,9 @@ def main():
     lights = lc.LEDString(count=50)
     lights.light_up(0, Color(255, 0, 0))
 
+    time.sleep(2)
+
+    lights.light_up(0, 0)
+
 if __name__ == "__main__":
     main()
