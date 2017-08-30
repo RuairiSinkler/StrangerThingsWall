@@ -9,7 +9,7 @@ LETTER_LED = {"A" : 0, "B" : 1, "C" : 2, "D" : 3, "E" : 4, "F" : 5, "G" : 6, "H"
 
 white = np.Color(255, 255, 255)
 dark_blue = np.Color(0, 0, 170)
-purple = np.Color(130, 0, 130)
+purple = np.Color(50, 0, 50)
 cyan = np.Color(50, 220, 220)
 light_blue = np.Color(0, 150, 200)
 yellow = np.Color(255, 200, 0)
