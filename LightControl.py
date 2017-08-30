@@ -28,8 +28,14 @@ class LEDString:
         # Intialize the library (must be called once before other functions).
         self.strip.begin()
 
-    def light_up(self, led_no, colour):
+    def activate(self, led_no, colour):
         self.strip.setPixelColor(led_no, colour)
+
+    def show(self):
+        self.strip.show()
+
+    def light_up(self, led_no, colour):
+        self.activate(led_no, colour)
         self.strip.show()
 
     def turn_all_off(self):

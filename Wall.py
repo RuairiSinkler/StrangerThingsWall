@@ -29,19 +29,32 @@ LETTER_COLOUR = {"A" : white, "B" : dark_blue, "C" : purple,
 def light_letter(lights, letter):
     led = LETTER_LED.get(letter)
     colour = LETTER_COLOUR.get(letter)
-    lights.light_up(led, colour)
+    lights.activate(led, colour)
 
 def display_word(lights, word):
     letters = list(word.upper())
     for letter in letters:
         if not(letter == " "):
             light_letter(lights, letter)
+            lights.show()
         time.sleep(1)
         lights.turn_all_off()
+        time.sleep(1)
+
+def flicker(lights, repetitions=10):
+    for i in range(repetitions):
+        for letter in LETTER_LED:
+            light_letter(lights, letter)
+        lights.show()
+        time.sleep(0.2)
+        lights.turn_all_off()
+        time.sleep(0.2)
+
 
 def main():
     lights = lc.LEDString(count=50)
     display_word(lights, "run")
+    flicker(lights)
 
 if __name__ == "__main__":
     main()
