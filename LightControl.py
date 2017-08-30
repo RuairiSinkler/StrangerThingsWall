@@ -31,3 +31,8 @@ class LEDString:
     def light_up(self, led_no, colour):
         self.strip.setPixelColor(led_no, colour)
         self.strip.show()
+
+    def turn_all_off(self):
+        for i in range(self.strip.numPixels()):
+            self.strip.setPixelColor(i, 0)
+        self.strip.show()
