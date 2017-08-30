@@ -58,6 +58,8 @@ def main():
     display_word(lights, "run")
     flicker(lights)
     turn_all_on(lights)
+    time.sleep(10)
+    lights.turn_all_off()
 
 if __name__ == "__main__":
     main()
