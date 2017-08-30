@@ -43,18 +43,21 @@ def display_word(lights, word):
 
 def flicker(lights, repetitions=10):
     for i in range(repetitions):
-        for letter in LETTER_LED:
-            light_letter(lights, letter)
-        lights.show()
+        turn_all_on(lights)
         time.sleep(0.2)
         lights.turn_all_off()
         time.sleep(0.2)
 
+def turn_all_on(lights):
+    for letter in LETTER_LED:
+        light_letter(lights, letter)
+    lights.show()
 
 def main():
     lights = lc.LEDString(count=50)
     display_word(lights, "run")
     flicker(lights)
+    turn_all_on(lights)
 
 if __name__ == "__main__":
     main()
