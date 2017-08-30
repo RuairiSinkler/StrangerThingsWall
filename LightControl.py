@@ -12,7 +12,7 @@ class LEDString:
     LED_INVERT = False  # True to invert the signal (when using NPN transistor level shift)
     LED_BRIGHTNESS = 255     # Set to 0 for darkest and 255 for brightest
     LED_CHANNEL    = 0       # set to '1' for GPIOs 13, 19, 41, 45 or 53
-    LED_STRIP      = np.ws.WS2811_STRIP_GRB   # Strip type and colour ordering
+    LED_STRIP      = np.ws.WS2811_STRIP_RGB   # Strip type and colour ordering
 
     def __init__(self, **cnf):
         # Create NeoPixel object with appropriate configuration.
