@@ -66,7 +66,7 @@ class Wall:
                 self.lights.show()
             time.sleep(1)
             self.lights.turn_all_off()
-            time.sleep(1)
+            time.sleep(0.5)
 
     def random_word(self):
         self.display_word(random.choice(self.words))
