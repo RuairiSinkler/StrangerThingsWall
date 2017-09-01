@@ -48,10 +48,9 @@ class Wall:
 
     def word_is_ok(self, word):
         word = word.upper()
-        if len(word) < self.MAX_WORD_LENGTH or not(set(word).issubset(self.ALLOWED_CHARACTERS)):
-            return False
-        else:
-            return True
+        print(len(word) < self.MAX_WORD_LENGTH)
+        print(set(word).issubset(self.ALLOWED_CHARACTERS))
+        return set(word).issubset(self.ALLOWED_CHARACTERS) and len(word) < self.MAX_WORD_LENGTH
 
     def light_letter(self, letter):
         led = self.LETTER_LED.get(letter)
