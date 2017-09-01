@@ -42,13 +42,13 @@ class Wall:
         file_output = file.readlines()
         for line in file_output:
             line = line.upper()
-            #print(self.word_is_ok(line))
+            print(self.word_is_ok(line))
             if self.word_is_ok(line):
                 self.words.append(line)
 
     def word_is_ok(self, word):
         word = word.upper()
-        if len(word) < self.MAX_WORD_LENGTH or not(set(word) <= self.ALLOWED_CHARACTERS):
+        if len(word) < self.MAX_WORD_LENGTH or not(set(word).issubset(self.ALLOWED_CHARACTERS)):
             return False
         else:
             return True
