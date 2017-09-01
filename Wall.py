@@ -36,7 +36,7 @@ class Wall:
             number = int(line[line.index(":") + 1:])
             self.LETTER_LED[letter] = number
 
-        self.words
+        self.words = []
 
         file = open("words.txt", "r")
         file_output = file.readlines()
