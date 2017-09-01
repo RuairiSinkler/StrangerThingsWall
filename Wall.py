@@ -48,7 +48,7 @@ class Wall:
 
     def word_is_ok(self, word):
         word = word.upper()
-        if len(word) < self.MAX_WORD_LENGTH or not(word <= self.ALLOWED_CHARACTERS):
+        if len(word) < self.MAX_WORD_LENGTH or not(set(word) <= self.ALLOWED_CHARACTERS):
             return False
         else:
             return True
