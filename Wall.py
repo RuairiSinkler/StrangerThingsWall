@@ -63,14 +63,17 @@ class Wall:
             self.light_letter(lights, letter)
         self.lights.show()
 
+    def turn_all_off(self):
+        self.lights.turn_all_off()
+
 def main():
     lights = lc.LEDString(count=50)
     wall = Wall(lights)
-    wall.display_word(lights, "run")
-    wall.flicker(lights)
-    wall.turn_letters_on(lights)
+    wall.display_word("run")
+    wall.flicker()
+    wall.turn_letters_on()
     time.sleep(10)
-    lights.turn_all_off()
+    wall.turn_all_off()
 
 if __name__ == "__main__":
     main()
