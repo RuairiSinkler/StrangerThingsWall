@@ -33,7 +33,7 @@ class Wall:
         file_output = file.readlines()
         for line in file_output:
             letter = line[:line.index(":")]
-            number = int(line[line.index(":")])
+            number = int(line[line.index(":") + 1:])
             self.LETTER_LED[letter] = number
 
     def light_letter(self, letter):
