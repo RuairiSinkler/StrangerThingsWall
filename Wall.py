@@ -51,16 +51,16 @@ class Wall:
             self.lights.turn_all_off()
             time.sleep(1)
 
-    def flicker(self, lights, repetitions=10):
+    def flicker(self, repetitions=10):
         for i in range(repetitions):
-            self.turn_letters_on(lights)
+            self.turn_letters_on()
             time.sleep(0.2)
             self.lights.turn_all_off()
             time.sleep(0.2)
 
-    def turn_letters_on(self, lights):
+    def turn_letters_on(self):
         for letter in self.LETTER_LED:
-            self.light_letter(lights, letter)
+            self.light_letter(letter)
         self.lights.show()
 
     def turn_all_off(self):
