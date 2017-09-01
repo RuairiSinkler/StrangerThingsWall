@@ -42,15 +42,15 @@ class Wall:
         file_output = file.readlines()
         for line in file_output:
             line = line.upper().rstrip()
-            print(line)
-            print(self.word_is_ok(line))
+            #print(line)
+            #print(self.word_is_ok(line))
             if self.word_is_ok(line):
                 self.words.append(line)
 
     def word_is_ok(self, word):
         word = word.upper()
-        print(len(word) < self.MAX_WORD_LENGTH)
-        print(set(word).issubset(self.ALLOWED_CHARACTERS))
+        #print(len(word) < self.MAX_WORD_LENGTH)
+        #print(set(word).issubset(self.ALLOWED_CHARACTERS))
         return set(word).issubset(self.ALLOWED_CHARACTERS) and len(word) < self.MAX_WORD_LENGTH
 
     def light_letter(self, letter):
