@@ -1,4 +1,5 @@
 import time
+import random
 
 import neopixel as np
 import LightControl as lc
@@ -8,6 +9,8 @@ class Wall:
     def __init__(self, lights):
 
         self.lights = lights
+        self.MAX_WORD_LENGTH = 20
+        self.ALLOWED_CHARACTERS = set("ABCDEFGHIJKLMNOPQRSTUVWXYZ ")
 
         white = np.Color(255, 255, 255)
         dark_blue = np.Color(0, 0, 170)
@@ -17,15 +20,12 @@ class Wall:
         yellow = np.Color(255, 200, 0)
         pink = np.Color(255, 50, 255)
 
-        self.LETTER_COLOUR = {"A" : white, "B" : dark_blue, "C" : purple,
-                         "D" : cyan, "E" : light_blue, "F" : yellow,
-                         "G" : pink, "H" : cyan,
-                         "I" : cyan, "J" : pink, "K" : light_blue,
-                         "L" : cyan, "M" : yellow, "N" : pink,
-                         "O" : purple, "P" : cyan, "Q" : pink,
-                         "R" : cyan, "S" : white, "T" : yellow,
-                         "U" : light_blue, "V" : pink, "W" : light_blue,
-                         "X" : yellow, "Y" : pink, "Z" : pink}
+        self.LETTER_COLOUR = {"A" : white, "B" : dark_blue, "C" : purple, "D" : cyan, "E" : light_blue, "F" : yellow,
+                              "G" : pink, "H" : cyan,
+                              "I" : cyan, "J" : pink, "K" : light_blue, "L" : cyan, "M" : yellow, "N" : pink,
+                              "O" : purple, "P" : cyan, "Q" : pink,
+                              "R" : cyan, "S" : white, "T" : yellow, "U" : light_blue, "V" : pink, "W" : light_blue,
+                              "X" : yellow, "Y" : pink, "Z" : pink}
 
         self.LETTER_LED = {}
 
@@ -35,6 +35,22 @@ class Wall:
             letter = line[:line.index(":")]
             number = int(line[line.index(":") + 1:])
             self.LETTER_LED[letter] = number
+
+        self.words
+
+        file = open("words.txt", "r")
+        file_output = file.readlines()
+        for line in file_output:
+            line = line.upper()
+            if self.word_is_ok(line):
+                self.words.append(line)
+
+    def word_is_ok(self, word):
+        word = word.upper()
+        if len(word) > self.MAX_WORD_LENGTH or not(word <= self.ALLOWED_CHARACTERS):
+            return False
+        else:
+            return True
 
     def light_letter(self, letter):
         led = self.LETTER_LED.get(letter)
@@ -50,6 +66,10 @@ class Wall:
             time.sleep(1)
             self.lights.turn_all_off()
             time.sleep(1)
+
+    def random_word(self):
+        self.display_word(random.choice(self.words))
+        self.flicker()
 
     def flicker(self, repetitions=10):
         for i in range(repetitions):
@@ -69,8 +89,8 @@ class Wall:
 def main():
     lights = lc.LEDString(count=50)
     wall = Wall(lights)
-    wall.display_word("run")
-    wall.flicker()
+    for i in range(9):
+        wall.random_word()
     wall.turn_letters_on()
     time.sleep(10)
     wall.turn_all_off()
