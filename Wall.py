@@ -41,7 +41,7 @@ class Wall:
         file = open("words.txt", "r")
         file_output = file.readlines()
         for line in file_output:
-            line = line.upper()
+            line = line.upper().rstrip()
             print(line)
             print(self.word_is_ok(line))
             if self.word_is_ok(line):
