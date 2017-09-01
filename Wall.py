@@ -42,6 +42,7 @@ class Wall:
         file_output = file.readlines()
         for line in file_output:
             line = line.upper()
+            print(self.word_is_ok(line))
             if self.word_is_ok(line):
                 self.words.append(line)
 
