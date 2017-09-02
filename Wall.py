@@ -13,6 +13,7 @@ class Wall:
         self.lights = lights
         self.queued_words = queue.Queue()
         self.running = True
+        self.inputs_required = True
         self.MAX_WORD_LENGTH = 20
         self.ALLOWED_CHARACTERS = set("ABCDEFGHIJKLMNOPQRSTUVWXYZ ")
 
@@ -55,12 +56,13 @@ class Wall:
         inputs = threading.Thread(target=self.get_console_inputs)
         inputs.start()
         while self.running:
-            self.queue_random_word()
+            if self.queued_words.empty():
+                self.queue_random_word()
             self.display_queued_word()
             self.flicker()
 
     def get_console_inputs(self):
-        while True:
+        while self.inputs_required:
             word = input("> ")
             if self.word_is_ok(word):
                 print("Word added to queue")
@@ -118,12 +120,9 @@ def main():
         wall = Wall(lights)
         wall.run()
     finally:
+        wall.running = False
+        wall.inputs_required = False
         wall.turn_all_off()
-    #for i in range(9):
-        #wall.random_word()
-    #wall.turn_letters_on()
-    #time.sleep(10)
-    #wall.turn_all_off()
 
 if __name__ == "__main__":
     main()
