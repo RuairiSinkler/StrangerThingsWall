@@ -1,6 +1,7 @@
 import time
 import random
 import queue
+import threading
 
 import neopixel as np
 import LightControl as lc
@@ -51,10 +52,19 @@ class Wall:
                 self.words.append(line)
 
     def run(self):
+        inputs = threading.Thread(target=self.get_console_inputs)
+        inputs.start()
         while self.running:
             self.queue_random_word()
             self.display_queued_word()
             self.flicker()
+
+    def get_console_inputs(self):
+        while True:
+            word = input("> ")
+            if self.word_is_ok(word):
+                self.queued_words.put(word)
+
 
     def word_is_ok(self, word):
         word = word.upper()
