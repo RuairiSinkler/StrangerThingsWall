@@ -63,7 +63,10 @@ class Wall:
         while True:
             word = input("> ")
             if self.word_is_ok(word):
+                print("Word added to queue")
                 self.queued_words.put(word)
+            else:
+                print("Sorry, not a valid input")
 
 
     def word_is_ok(self, word):
