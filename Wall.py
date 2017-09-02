@@ -1,5 +1,6 @@
 import time
 import random
+import queue
 
 import neopixel as np
 import LightControl as lc
@@ -9,6 +10,8 @@ class Wall:
     def __init__(self, lights):
 
         self.lights = lights
+        self.queued_words = queue.Queue()
+        self.running = True
         self.MAX_WORD_LENGTH = 20
         self.ALLOWED_CHARACTERS = set("ABCDEFGHIJKLMNOPQRSTUVWXYZ ")
 
@@ -47,6 +50,12 @@ class Wall:
             if self.word_is_ok(line):
                 self.words.append(line)
 
+    def run(self):
+        while self.running:
+            self.queue_random_word()
+            self.display_queued_word()
+            self.flicker()
+
     def word_is_ok(self, word):
         word = word.upper()
         #print(len(word) < self.MAX_WORD_LENGTH)
@@ -68,9 +77,12 @@ class Wall:
             self.lights.turn_all_off()
             time.sleep(0.5)
 
-    def random_word(self):
-        self.display_word(random.choice(self.words))
-        self.flicker()
+    def display_queued_word(self):
+        word = self.queued_words.get()
+        self.display_word(word)
+
+    def queue_random_word(self):
+        self.queued_words.put(random.choice(self.words))
 
     def flicker(self, repetitions=10):
         for i in range(repetitions):
@@ -88,13 +100,17 @@ class Wall:
         self.lights.turn_all_off()
 
 def main():
-    lights = lc.LEDString(count=50)
-    wall = Wall(lights)
-    for i in range(9):
-        wall.random_word()
-    wall.turn_letters_on()
-    time.sleep(10)
-    wall.turn_all_off()
+    try:
+        lights = lc.LEDString(count=50)
+        wall = Wall(lights)
+        wall.run()
+    finally:
+        wall.turn_all_off()
+    #for i in range(9):
+        #wall.random_word()
+    #wall.turn_letters_on()
+    #time.sleep(10)
+    #wall.turn_all_off()
 
 if __name__ == "__main__":
     main()
