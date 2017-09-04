@@ -1,7 +1,9 @@
 import time
 import random
+import configparser
 import queue
 import threading
+import twitter
 
 import neopixel as np
 import LightControl as lc
@@ -32,25 +34,42 @@ class Wall:
                               "R" : cyan, "S" : white, "T" : yellow, "U" : light_blue, "V" : pink, "W" : light_blue,
                               "X" : yellow, "Y" : pink, "Z" : pink}
 
+        config = configparser.configparser()
+        config.read("wall.ini")
+
         self.LETTER_LED = {}
 
-        file = open("leds.txt", "r")
-        file_output = file.readlines()
-        for line in file_output:
-            letter = line[:line.index(":")]
-            number = int(line[line.index(":") + 1:])
+        #file = open("leds.txt", "r")
+        #file_output = file.readlines()
+        options = config.options("LED Numbers")
+        for option in options:
+            letter = option
+            number = config.get("LED Numbers", option)
             self.LETTER_LED[letter] = number
 
         self.words = []
 
-        file = open("words.txt", "r")
-        file_output = file.readlines()
-        for line in file_output:
-            line = line.upper().rstrip()
+        #file = open("words.txt", "r")
+        #file_output = file.readlines()
+        options = config.options("Words")
+        for option in options:
+            line = config.get("Words", option).upper().rstrip()
             #print(line)
             #print(self.word_is_ok(line))
             if self.word_is_ok(line):
                 self.words.append(line)
+
+        #Twitter setup
+        consumer_key = config.get("Twitter", "consumer_key")
+        consumer_secret = config.get("Twitter", "consumer_secret")
+        access_token = config.get("Twitter", "access_token")
+        access_token_secret = config.get("Twitter", "access_token_secret")
+        self.api = twitter.Api(consumer_key=consumer_key,
+                               consumer_secret=consumer_secret,
+                               access_token_key=access_token,
+                               access_token_secret=access_token_secret,
+                               sleep_on_rate_limit=True)
+
 
     def run(self):
         inputs = threading.Thread(target=self.get_console_inputs)
@@ -69,6 +88,21 @@ class Wall:
                 self.queued_words.put(word)
             else:
                 print("Sorry, not a valid input")
+
+    def get_twitter_inputs(self):
+        latest_id = None
+        while True:
+            results = self.api.GetHomeTimeline(since_id=latest_id)
+            for status in results:
+                latest_id = 0
+                word = status["text"]
+                if self.word_is_ok(word):
+                    print("Word added to queue")
+                    self.queued_words.put(word)
+                else:
+                    print("Sorry, not a valid input")
+                latest_id = max(latest_id, status["id"])
+            time.sleep(60)
 
 
     def word_is_ok(self, word):
