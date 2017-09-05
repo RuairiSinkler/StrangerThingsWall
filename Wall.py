@@ -45,6 +45,7 @@ class Wall:
         for option in options:
             letter = option
             number = config.get("LED Numbers", option)
+            print(letter, number)
             self.LETTER_LED[letter] = number
 
         self.words = []
