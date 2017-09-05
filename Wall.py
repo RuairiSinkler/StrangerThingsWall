@@ -12,6 +12,7 @@ class Wall:
 
     def __init__(self, lights):
 
+        self.init_time = int(time.time())
         self.lights = lights
         self.queued_words = queue.Queue()
         self.running = True
@@ -88,20 +89,22 @@ class Wall:
                 print("Sorry, not a valid input")
 
     def get_twitter_inputs(self):
-        latest_id = None
+        latest_id = 0
         while True:
             results = self.api.GetHomeTimeline(since_id=latest_id)
             for status in results:
-                latest_id = 0
-                word = status["text"]
-                if self.word_is_ok(word):
-                    print("Word added to queue")
-                    self.queued_words.put(word)
-                else:
-                    print("Sorry, not a valid input")
-                latest_id = max(latest_id, status["id"])
+                if self.status_is_ok(status):
+                    word = status.text
+                    if self.word_is_ok(word):
+                        print("Twitter word added to queue")
+                        self.queued_words.put(word)
+                    else:
+                        print("Twitter word rejected")
+                    latest_id = max(latest_id, status.id)
             time.sleep(60)
 
+    def status_is_ok(self, status):
+        return status.created_at_in_seconds > self.init_time and {"text": "strangestthingswall"} in status.hashtags
 
     def word_is_ok(self, word):
         word = word.upper()
