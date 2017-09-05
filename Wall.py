@@ -56,6 +56,7 @@ class Wall:
             word = word.upper().rstrip()
             #print(line)
             #print(self.word_is_ok(line))
+            print(word)
             if self.word_is_ok(word):
                 self.words.append(word)
 
