@@ -71,8 +71,10 @@ class Wall:
 
 
     def run(self):
-        inputs = threading.Thread(target=self.get_console_inputs)
-        inputs.start()
+        console_inputs = threading.Thread(target=self.get_console_inputs)
+        console_inputs.start()
+        twitter_inputs = threading.Thread(target=self.get_twitter_inputs)
+        twitter_inputs.start()
         while self.running:
             if self.queued_words.empty():
                 self.queue_random_word()
