@@ -51,13 +51,13 @@ class Wall:
 
         #file = open("words.txt", "r")
         #file_output = file.readlines()
-        options = config.options("Words")
-        for option in options:
-            line = config.get("Words", option).upper().rstrip()
+        words = config.get("Words", "words").split(",")
+        for word in words:
+            word = word.upper().rstrip()
             #print(line)
             #print(self.word_is_ok(line))
-            if self.word_is_ok(line):
-                self.words.append(line)
+            if self.word_is_ok(word):
+                self.words.append(word)
 
         #Twitter setup
         consumer_key = config.get("Twitter", "consumer_key")
