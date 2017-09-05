@@ -106,6 +106,9 @@ class Wall:
                     else:
                         print("Twitter word rejected")
                     latest_id = max(latest_id, status.id)
+                else:
+                    print("Status rejected")
+                print()
             time.sleep(60)
 
     def status_is_ok(self, status):
