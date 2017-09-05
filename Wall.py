@@ -39,25 +39,21 @@ class Wall:
 
         self.LETTER_LED = {}
 
-        #file = open("leds.txt", "r")
-        #file_output = file.readlines()
         options = config.options("LED Numbers")
         for option in options:
             letter = option.upper().rstrip()
             number = config.getint("LED Numbers", option)
-            print(letter, number, type(letter), type(number))
+            #print(letter, number, type(letter), type(number))
             self.LETTER_LED[letter] = number
 
         self.words = []
 
-        #file = open("words.txt", "r")
-        #file_output = file.readlines()
         words = config.get("Words", "words").split(",")
         for word in words:
             word = word.upper().rstrip()
             #print(line)
             #print(self.word_is_ok(line))
-            print(word)
+            #print(word)
             if self.word_is_ok(word):
                 self.words.append(word)
 
@@ -115,7 +111,7 @@ class Wall:
 
     def light_letter(self, letter):
         led = self.LETTER_LED.get(letter.upper())
-        print(led, type(led))
+        #print(led, type(led))
         colour = self.LETTER_COLOUR.get(letter.upper())
         self.lights.activate(led, colour)
 
