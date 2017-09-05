@@ -43,7 +43,7 @@ class Wall:
         #file_output = file.readlines()
         options = config.options("LED Numbers")
         for option in options:
-            letter = option
+            letter = option.upper().rstrip()
             number = config.getint("LED Numbers", option)
             print(letter, number, type(letter), type(number))
             self.LETTER_LED[letter] = number
@@ -114,9 +114,9 @@ class Wall:
         return set(word).issubset(self.ALLOWED_CHARACTERS) and len(word) < self.MAX_WORD_LENGTH
 
     def light_letter(self, letter):
-        led = self.LETTER_LED.get(letter)
+        led = self.LETTER_LED.get(letter.upper())
         print(led, type(led))
-        colour = self.LETTER_COLOUR.get(letter)
+        colour = self.LETTER_COLOUR.get(letter.upper())
         self.lights.activate(led, colour)
 
     def display_word(self, word):
