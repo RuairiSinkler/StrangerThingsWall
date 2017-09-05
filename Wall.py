@@ -98,9 +98,10 @@ class Wall:
             for status in results:
                 print("Checking tweet: {}".format(status.text))
                 if self.status_is_ok(status):
-                    word = status.text
+                    cutoff = status.text.index("#")
+                    word = status.text[:cutoff].upper().rstrip()
                     if self.word_is_ok(word):
-                        print("Twitter word added to queue")
+                        print("Twitter word added to queue: {}".format(word))
                         self.queued_words.put(word)
                     else:
                         print("Twitter word rejected")
