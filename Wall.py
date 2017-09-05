@@ -115,6 +115,7 @@ class Wall:
 
     def light_letter(self, letter):
         led = self.LETTER_LED.get(letter)
+        print(led, type(led))
         colour = self.LETTER_COLOUR.get(letter)
         self.lights.activate(led, colour)
 
