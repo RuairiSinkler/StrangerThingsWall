@@ -34,7 +34,7 @@ class Wall:
                               "R" : cyan, "S" : white, "T" : yellow, "U" : light_blue, "V" : pink, "W" : light_blue,
                               "X" : yellow, "Y" : pink, "Z" : pink}
 
-        config = configparser.configparser()
+        config = configparser.ConfigParser()
         config.read("wall.ini")
 
         self.LETTER_LED = {}
