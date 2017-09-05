@@ -93,8 +93,10 @@ class Wall:
     def get_twitter_inputs(self):
         latest_id = 0
         while True:
+            print("Checking Twitter")
             results = self.api.GetHomeTimeline(since_id=latest_id)
             for status in results:
+                print("Checking tweet: {}".format(status.text))
                 if self.status_is_ok(status):
                     word = status.text
                     if self.word_is_ok(word):
