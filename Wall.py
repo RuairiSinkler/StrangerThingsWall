@@ -108,7 +108,8 @@ class Wall:
             time.sleep(60)
 
     def status_is_ok(self, status):
-        return status.created_at_in_seconds > self.init_time and {"text": "strangestthingswall"} in status.hashtags
+        return status.created_at_in_seconds > self.init_time \
+               and twitter.Hashtag(text="strangestthingswall") in status.hashtags
 
     def word_is_ok(self, word):
         word = word.upper()
