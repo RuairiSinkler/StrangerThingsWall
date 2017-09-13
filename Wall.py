@@ -58,6 +58,16 @@ class Wall:
             if self.word_is_ok(word):
                 self.words.append(word)
 
+        self.blacklist = []
+
+        blacklist = config.get("Words", "blacklist").split(",")
+        for word in blacklist:
+            word = word.upper().rstrip()
+            # print(line)
+            # print(self.word_is_ok(line))
+            # print(word)
+            self.blacklist.append(word)
+
         #Twitter setup
         consumer_key = config.get("Twitter", "consumer_key")
         consumer_secret = config.get("Twitter", "consumer_secret")
@@ -115,11 +125,21 @@ class Wall:
         return status.created_at_in_seconds > self.init_time \
                and twitter.Hashtag(text="strangestthingswall") in status.hashtags
 
+    def check_blacklist(self, word):
+        for item in self.blacklist:
+            if item in word:
+                return False
+        return True
+
     def word_is_ok(self, word):
-        word = word.upper()
+        word = word.upper().rstrip()
         #print(len(word) < self.MAX_WORD_LENGTH)
         #print(set(word).issubset(self.ALLOWED_CHARACTERS))
-        return set(word).issubset(self.ALLOWED_CHARACTERS) and len(word) < self.MAX_WORD_LENGTH
+        characters_ok = set(word).issubset(self.ALLOWED_CHARACTERS)
+        length_ok = len(word) < self.MAX_WORD_LENGTH
+        blacklist_ok = self.check_blacklist(word)
+        all_ok = characters_ok and length_ok and blacklist_ok
+        return all_ok
 
     def light_letter(self, letter):
         led = self.LETTER_LED.get(letter.upper())
