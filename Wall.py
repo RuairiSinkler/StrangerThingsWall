@@ -57,7 +57,7 @@ class Wall:
             # print(word)
             self.blacklist.append(word)
 
-        self.words = []
+        self.words = ["run"]
 
         words = config.get("Words", "words").split(",")
         for word in words:
