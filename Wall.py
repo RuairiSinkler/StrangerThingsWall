@@ -49,14 +49,17 @@ class Wall:
 
         self.blacklist = []
 
-        blacklist = config.get("Words", "blacklist").split(",")
-        for word in blacklist:
-            print("blacklist word", word)
-            word = word.upper().rstrip()
-            # print(line)
-            # print(self.word_is_ok(line))
-            # print(word)
-            self.blacklist.append(word)
+        try:
+            blacklist = config.get("Words", "blacklist").split(",")
+            for word in blacklist:
+                print("blacklist word", word)
+                word = word.upper().rstrip()
+                # print(line)
+                # print(self.word_is_ok(line))
+                # print(word)
+                self.blacklist.append(word)
+        except configparser.NoOptionError:
+            self.blacklist = []
 
         self.words = []
 
