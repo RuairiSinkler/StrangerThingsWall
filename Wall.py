@@ -127,8 +127,10 @@ class Wall:
             time.sleep(60)
 
     def status_is_ok(self, status):
+        strangestthingswall = twitter.Hashtag(text="strangestthingswall")
+        StrangestThingsWall = twitter.Hashtag(text="StrangestThingsWall")
         return status.created_at_in_seconds > self.init_time \
-               and twitter.Hashtag(text="strangestthingswall") in status.hashtags
+               and (strangestthingswall in status.hashtags or StrangestThingsWall in status.hashtags)
 
     def check_blacklist(self, word):
         for item in self.blacklist:
