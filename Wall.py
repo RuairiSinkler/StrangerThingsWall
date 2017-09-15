@@ -47,6 +47,16 @@ class Wall:
             #print(letter, number, type(letter), type(number))
             self.LETTER_LED[letter] = number
 
+        self.blacklist = []
+
+        blacklist = config.get("Words", "blacklist").split(",")
+        for word in blacklist:
+            word = word.upper().rstrip()
+            # print(line)
+            # print(self.word_is_ok(line))
+            # print(word)
+            self.blacklist.append(word)
+
         self.words = []
 
         words = config.get("Words", "words").split(",")
@@ -57,16 +67,6 @@ class Wall:
             #print(word)
             if self.word_is_ok(word):
                 self.words.append(word)
-
-        self.blacklist = []
-
-        blacklist = config.get("Words", "blacklist").split(",")
-        for word in blacklist:
-            word = word.upper().rstrip()
-            # print(line)
-            # print(self.word_is_ok(line))
-            # print(word)
-            self.blacklist.append(word)
 
         #Twitter setup
         consumer_key = config.get("Twitter", "consumer_key")
