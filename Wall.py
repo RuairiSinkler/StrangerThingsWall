@@ -112,8 +112,9 @@ class Wall:
             for status in results:
                 print("Checking tweet: {}".format(status.text))
                 if self.status_is_ok(status):
-                    cutoff = status.text.index("#")
-                    word = status.text[:cutoff].upper().rstrip()
+                    mention = status.text.index(" ")
+                    hashtag = status.text.index("#")
+                    word = status.text[mention:hashtag].upper().rstrip()
                     if self.word_is_ok(word):
                         print("Twitter word added to queue: {}".format(word))
                         self.queued_words.put(word)
