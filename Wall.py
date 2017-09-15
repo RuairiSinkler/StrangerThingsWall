@@ -125,10 +125,10 @@ class Wall:
                     else:
                         print("Twitter word rejected")
                         fail = True
-                    latest_id = max(latest_id, status.id)
                 else:
                     print("Status rejected")
                     fail = True
+                latest_id = max(latest_id, status.id)
                 print()
             print("Twitter Check Sleeping")
             time.sleep(20)
