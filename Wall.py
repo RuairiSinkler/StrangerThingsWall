@@ -12,6 +12,7 @@ class Wall:
 
     def __init__(self, lights):
 
+        self.failure_text = ""
         self.init_time = int(time.time())
         self.lights = lights
         self.queued_words = queue.Queue()
@@ -108,8 +109,12 @@ class Wall:
         latest_id = 0
         while True:
             print("Checking Twitter")
-            results = self.api.GetMentions(since_id=latest_id)
+            results = self.api.GetMentions(count=200, since_id=latest_id)
             for status in results:
+                print(status.id.user, type(status.id.user))
+                print(status.id.user.name, type(status.id.user.name))
+                self.failure_text = "Sorry your tweet failed because"
+                fail = False
                 print("Checking tweet: {}".format(status.text))
                 if self.status_is_ok(status):
                     mention = status.text.index(" ")
@@ -118,19 +123,24 @@ class Wall:
                     if self.word_is_ok(word):
                         print("Twitter word added to queue: {}".format(word))
                         self.queued_words.put(word)
+                        self.api.PostUpdate("Thank you @{}, your message has been sent to the upside down!".format(status.id.user.name), in_reply_to_status_id=status.id)
                     else:
                         print("Twitter word rejected")
+                        fail = True
                     latest_id = max(latest_id, status.id)
                 else:
                     print("Status rejected")
+                    fail = True
                 print()
-            time.sleep(60)
+            print("Twitter Check Sleeping")
+            time.sleep(20)
 
     def status_is_ok(self, status):
         strangestthingswall = twitter.Hashtag(text="strangestthingswall")
         StrangestThingsWall = twitter.Hashtag(text="StrangestThingsWall")
-        return status.created_at_in_seconds > self.init_time \
-               and (strangestthingswall in status.hashtags or StrangestThingsWall in status.hashtags)
+        new_enough = status.created_at_in_seconds > self.init_time
+        hashtag_present = (strangestthingswall in status.hashtags or StrangestThingsWall in status.hashtags)
+        return new_enough and hashtag_present
 
     def check_blacklist(self, word):
         for item in self.blacklist:
