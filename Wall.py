@@ -111,8 +111,8 @@ class Wall:
             print("Checking Twitter")
             results = self.api.GetMentions(count=200, since_id=latest_id)
             for status in results:
-                print(status.id.user, type(status.id.user))
-                print(status.id.user.name, type(status.id.user.name))
+                print(status.user, type(status.user))
+                print(status.user.name, type(status.user.name))
                 self.failure_text = "Sorry your tweet failed because"
                 fail = False
                 print("Checking tweet: {}".format(status.text))
@@ -123,7 +123,7 @@ class Wall:
                     if self.word_is_ok(word):
                         print("Twitter word added to queue: {}".format(word))
                         self.queued_words.put(word)
-                        self.api.PostUpdate("Thank you @{}, your message has been sent to the upside down!".format(status.id.user.name), in_reply_to_status_id=status.id)
+                        self.api.PostUpdate("Thank you @{}, your message has been sent to the upside down!".format(status.user.name), in_reply_to_status_id=status.id)
                     else:
                         print("Twitter word rejected")
                         fail = True
