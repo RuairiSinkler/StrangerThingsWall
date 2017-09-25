@@ -115,9 +115,16 @@ class Wall:
                 fail = False
                 print("Checking tweet: {}".format(status.text))
                 if self.status_is_ok(status):
+                    at_symbol = status.text.index("@")
                     mention = status.text.index(" ")
                     hashtag = status.text.index("#")
-                    word = status.text[mention:hashtag].upper().rstrip()
+
+                    #Mention will be at end of tweet e.g. "hello @user #strangestthingswall"
+                    word = status.text[:at_symbol].upper().rstrip()
+
+                    #Mention will be at beginning of tweet e.g. "@user hello #strangestthingswall"
+                    #word = status.text[mention:hashtag].upper().rstrip()
+
                     if self.word_is_ok(word):
                         print("Twitter word added to queue: {}".format(word))
                         self.queued_words.put(word)
