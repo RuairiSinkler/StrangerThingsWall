@@ -20,6 +20,9 @@ class Wall:
         self.inputs_required = True
         self.MAX_WORD_LENGTH = 60
         self.ALLOWED_CHARACTERS = set("ABCDEFGHIJKLMNOPQRSTUVWXYZ ")
+        self.letters = ["A", "B", "C", "D", "E", "F", "G", "H",
+                        "I", "J", "K", "L", "M", "N", "O", "P", "Q",
+                        "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
 
         white = np.Color(255, 255, 255)
         dark_blue = np.Color(0, 0, 170)
@@ -199,7 +202,7 @@ class Wall:
 
     def trail_letters(self, repetitions=1):
         for i in range(repetitions):
-            for letter in self.LETTER_COLOUR:
+            for letter in self.letters:
                 print(letter)
                 if letter != " ":
                     self.light_letter(letter)
