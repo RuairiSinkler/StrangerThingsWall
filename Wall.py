@@ -18,7 +18,7 @@ class Wall:
         self.queued_words = queue.Queue()
         self.running = True
         self.inputs_required = True
-        self.MAX_WORD_LENGTH = 20
+        self.MAX_WORD_LENGTH = 60
         self.ALLOWED_CHARACTERS = set("ABCDEFGHIJKLMNOPQRSTUVWXYZ ")
 
         white = np.Color(255, 255, 255)
@@ -38,6 +38,8 @@ class Wall:
 
         config = configparser.ConfigParser()
         config.read("wall.ini")
+
+        self.animations = [self.flicker]
 
         self.LETTER_LED = {}
 
@@ -94,7 +96,7 @@ class Wall:
             if self.queued_words.empty():
                 self.queue_random_word()
             self.display_queued_word()
-            self.flicker()
+            random.choice(self.animations)()
 
     def get_console_inputs(self):
         while self.inputs_required:
