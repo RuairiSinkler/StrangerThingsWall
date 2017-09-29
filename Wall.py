@@ -39,7 +39,7 @@ class Wall:
         config = configparser.ConfigParser()
         config.read("wall.ini")
 
-        self.animations = [self.flicker]
+        self.animations = [self.flicker, self.trail_letters]
 
         self.LETTER_LED = {}
 
@@ -196,6 +196,15 @@ class Wall:
             time.sleep(0.2)
             self.lights.turn_all_off()
             time.sleep(0.2)
+
+    def trail_letters(self, repetitions=1):
+        for i in range(repetitions):
+            for letter in self.ALLOWED_CHARACTERS:
+                if letter != " ":
+                    self.light_letter(letter)
+                    time.sleep(0.2)
+                    self.lights.turn_all_off()
+                    time.sleep(0.2)
 
     def turn_letters_on(self):
         for letter in self.LETTER_LED:
