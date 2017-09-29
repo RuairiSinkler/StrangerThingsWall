@@ -209,6 +209,14 @@ class Wall:
                     time.sleep(0.01)
                     self.lights.turn_all_off()
                     time.sleep(0.01)
+            for letter in self.letters.reverse():
+                print(self.letters)
+                if letter != " ":
+                    self.light_letter(letter)
+                    self.lights.show()
+                    time.sleep(0.01)
+                    self.lights.turn_all_off()
+                    time.sleep(0.01)
 
     def turn_letters_on(self):
         for letter in self.LETTER_LED:
