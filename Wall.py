@@ -53,7 +53,7 @@ class Wall:
         try:
             blacklist = config.get("Words", "blacklist").split(",")
             for word in blacklist:
-                print("blacklist word", word)
+                #print("blacklist word", word)
                 word = word.upper().rstrip()
                 # print(line)
                 # print(self.word_is_ok(line))
@@ -168,9 +168,9 @@ class Wall:
             if not(letter == " "):
                 self.light_letter(letter)
                 self.lights.show()
-            time.sleep(1)
+            time.sleep(0.75)
             self.lights.turn_all_off()
-            time.sleep(0.5)
+            time.sleep(0.25)
 
     def display_queued_word(self):
         word = self.queued_words.get()
