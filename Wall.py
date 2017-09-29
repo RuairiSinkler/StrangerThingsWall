@@ -115,9 +115,17 @@ class Wall:
                 fail = False
                 print("Checking tweet: {}".format(status.text))
                 if self.status_is_ok(status):
+                    at_symbol = status.text.index("@")
                     mention = status.text.index(" ")
                     hashtag = status.text.index("#")
-                    word = status.text[mention:hashtag].upper().rstrip()
+
+                    #Mention will be at end of tweet e.g. "hello @user #strangestthingswall"
+                    word = status.text[:at_symbol].upper().rstrip()
+
+                    #Mention will be at beginning of tweet e.g. "@user hello #strangestthingswall"
+                    #status_is_ok also needs changing if this is used: mention_at_start check to be changed
+                    #word = status.text[mention:hashtag].upper().rstrip()
+
                     if self.word_is_ok(word):
                         print("Twitter word added to queue: {}".format(word))
                         self.queued_words.put(word)
@@ -137,8 +145,9 @@ class Wall:
         strangestthingswall = twitter.Hashtag(text="strangestthingswall")
         StrangestThingsWall = twitter.Hashtag(text="StrangestThingsWall")
         new_enough = status.created_at_in_seconds > self.init_time
+        mention_at_start = status.text.index("@") == 0
         hashtag_present = (strangestthingswall in status.hashtags or StrangestThingsWall in status.hashtags)
-        return new_enough and hashtag_present
+        return new_enough and hashtag_present and not(mention_at_start)
 
     def check_blacklist(self, word):
         for item in self.blacklist:
