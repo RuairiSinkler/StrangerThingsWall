@@ -206,16 +206,16 @@ class Wall:
                 if letter != " ":
                     self.light_letter(letter)
                     self.lights.show()
-                    time.sleep(0.01)
+                    time.sleep(0.02)
                     self.lights.turn_all_off()
-                    time.sleep(0.01)
+                    time.sleep(0.02)
             for letter in reversed(self.letters):
                 if letter != " ":
                     self.light_letter(letter)
                     self.lights.show()
-                    time.sleep(0.01)
+                    time.sleep(0.02)
                     self.lights.turn_all_off()
-                    time.sleep(0.01)
+                    time.sleep(0.02)
 
     def twinkle(self, repetitions=5):
         for i in range(repetitions):
