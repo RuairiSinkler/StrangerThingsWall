@@ -203,9 +203,9 @@ class Wall:
     def trail_letters(self, repetitions=1):
         for i in range(repetitions):
             for letter in self.letters:
-                print(letter)
                 if letter != " ":
                     self.light_letter(letter)
+                    self.lights.show()
                     time.sleep(0.2)
                     self.lights.turn_all_off()
                     time.sleep(0.2)
