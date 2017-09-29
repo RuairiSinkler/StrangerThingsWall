@@ -220,12 +220,12 @@ class Wall:
     def twinkle(self, repetitions=5):
         for i in range(repetitions):
             for letter in range(0, len(self.letters), 2):
-                self.light_letter(letter)
+                self.light_letter(self.letters[letter])
             self.lights.show()
             time.sleep(0.2)
             self.lights.turn_all_off()
             for letter in range(1, len(self.letters), 2):
-                self.light_letter(letter)
+                self.light_letter(self.letters[letter])
             self.lights.show()
             time.sleep(0.2)
             self.lights.turn_all_off()
