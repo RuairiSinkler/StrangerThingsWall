@@ -199,7 +199,7 @@ class Wall:
 
     def trail_letters(self, repetitions=1):
         for i in range(repetitions):
-            for letter in self.ALLOWED_CHARACTERS:
+            for letter in self.LETTER_COLOUR:
                 if letter != " ":
                     self.light_letter(letter)
                     time.sleep(0.2)
