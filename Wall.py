@@ -42,7 +42,7 @@ class Wall:
         config = configparser.ConfigParser()
         config.read("wall.ini")
 
-        self.animations = [self.flicker, self.trail_letters]
+        self.animations = [self.flicker, self.trail_letters, self.twinkle]
 
         self.LETTER_LED = {}
 
@@ -209,14 +209,26 @@ class Wall:
                     time.sleep(0.01)
                     self.lights.turn_all_off()
                     time.sleep(0.01)
-            for letter in self.letters.reverse():
-                print(self.letters)
+            for letter in reversed(self.letters):
                 if letter != " ":
                     self.light_letter(letter)
                     self.lights.show()
                     time.sleep(0.01)
                     self.lights.turn_all_off()
                     time.sleep(0.01)
+
+    def twinkle(self, repetitions=5):
+        for i in range(repetitions):
+            for letter in range(0, len(self.letters), 2):
+                self.light_letter(letter)
+            self.lights.show()
+            time.sleep(0.2)
+            self.lights.turn_all_off()
+            for letter in range(1, len(self.letters), 2):
+                self.light_letter(letter)
+            self.lights.show()
+            time.sleep(0.2)
+            self.lights.turn_all_off()
 
     def turn_letters_on(self):
         for letter in self.LETTER_LED:
