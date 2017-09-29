@@ -34,6 +34,9 @@ class LEDString:
     def show(self):
         self.strip.show()
 
+    def set_brightness(self, brightness):
+        self.strip.setBrightness(brightness)
+
     def light_up(self, led_no, colour):
         self.activate(led_no, colour)
         self.show()
