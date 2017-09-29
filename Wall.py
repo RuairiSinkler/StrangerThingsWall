@@ -193,7 +193,7 @@ class Wall:
     def queue_random_word(self):
         self.queued_words.put(random.choice(self.words))
 
-    def flicker(self, repetitions=10):
+    def flicker(self, repetitions=5):
         for i in range(repetitions):
             self.turn_letters_on()
             time.sleep(0.2)
@@ -206,9 +206,9 @@ class Wall:
                 if letter != " ":
                     self.light_letter(letter)
                     self.lights.show()
-                    time.sleep(0.2)
+                    time.sleep(0.01)
                     self.lights.turn_all_off()
-                    time.sleep(0.2)
+                    time.sleep(0.01)
 
     def turn_letters_on(self):
         for letter in self.LETTER_LED:
