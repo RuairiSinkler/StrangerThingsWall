@@ -200,6 +200,7 @@ class Wall:
     def trail_letters(self, repetitions=1):
         for i in range(repetitions):
             for letter in self.LETTER_COLOUR:
+                print(letter)
                 if letter != " ":
                     self.light_letter(letter)
                     time.sleep(0.2)
@@ -213,6 +214,10 @@ class Wall:
 
     def turn_all_off(self):
         self.lights.turn_all_off()
+
+    def test_animations(self):
+        for animation in self.animations:
+            animation()
 
 def main():
     try:
