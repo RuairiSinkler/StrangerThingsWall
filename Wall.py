@@ -223,6 +223,7 @@ def main():
     try:
         lights = lc.LEDString(count=50)
         wall = Wall(lights)
+        wall.test_animations()
         wall.run()
     finally:
         wall.running = False
