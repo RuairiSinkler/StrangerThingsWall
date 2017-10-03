@@ -18,8 +18,11 @@ class Wall:
         self.queued_words = queue.Queue()
         self.running = True
         self.inputs_required = True
-        self.MAX_WORD_LENGTH = 20
+        self.MAX_WORD_LENGTH = 60
         self.ALLOWED_CHARACTERS = set("ABCDEFGHIJKLMNOPQRSTUVWXYZ ")
+        self.letters = ["A", "B", "C", "D", "E", "F", "G", "H",
+                        "I", "J", "K", "L", "M", "N", "O", "P", "Q",
+                        "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
 
         white = np.Color(255, 255, 255)
         dark_blue = np.Color(0, 0, 170)
@@ -39,6 +42,8 @@ class Wall:
         config = configparser.ConfigParser()
         config.read("wall.ini")
 
+        self.animations = [self.flicker, self.trail_letters, self.twinkle, self.fade_in_and_out]
+
         self.LETTER_LED = {}
 
         options = config.options("LED Numbers")
@@ -53,7 +58,7 @@ class Wall:
         try:
             blacklist = config.get("Words", "blacklist").split(",")
             for word in blacklist:
-                print("blacklist word", word)
+                #print("blacklist word", word)
                 word = word.upper().rstrip()
                 # print(line)
                 # print(self.word_is_ok(line))
@@ -94,7 +99,7 @@ class Wall:
             if self.queued_words.empty():
                 self.queue_random_word()
             self.display_queued_word()
-            self.flicker()
+            random.choice(self.animations)()
 
     def get_console_inputs(self):
         while self.inputs_required:
@@ -177,9 +182,9 @@ class Wall:
             if not(letter == " "):
                 self.light_letter(letter)
                 self.lights.show()
-            time.sleep(1)
+            time.sleep(0.75)
             self.lights.turn_all_off()
-            time.sleep(0.5)
+            time.sleep(0.25)
 
     def display_queued_word(self):
         word = self.queued_words.get()
@@ -188,12 +193,68 @@ class Wall:
     def queue_random_word(self):
         self.queued_words.put(random.choice(self.words))
 
-    def flicker(self, repetitions=10):
+    def flicker(self, repetitions=5):
         for i in range(repetitions):
             self.turn_letters_on()
             time.sleep(0.2)
             self.lights.turn_all_off()
             time.sleep(0.2)
+
+    def trail_letters(self, repetitions=1):
+        for i in range(repetitions):
+            for letter in self.letters:
+                if letter != " ":
+                    self.light_letter(letter)
+                    self.lights.show()
+                    time.sleep(0.02)
+                    self.lights.turn_all_off()
+                    time.sleep(0.02)
+            for letter in reversed(self.letters):
+                if letter != " ":
+                    self.light_letter(letter)
+                    self.lights.show()
+                    time.sleep(0.02)
+                    self.lights.turn_all_off()
+                    time.sleep(0.02)
+
+    def twinkle(self, repetitions=5):
+        for i in range(repetitions):
+            for letter in range(0, len(self.letters), 2):
+                self.light_letter(self.letters[letter])
+            self.lights.show()
+            time.sleep(0.2)
+            self.lights.turn_all_off()
+            for letter in range(1, len(self.letters), 2):
+                self.light_letter(self.letters[letter])
+            self.lights.show()
+            time.sleep(0.2)
+            self.lights.turn_all_off()
+
+    def fade_in_and_out(self, repetitions=1):
+        for i in range(repetitions):
+            self.fade_in()
+            self.fade_out()
+
+    def fade_in(self, repetitions=1):
+        for i in range(repetitions):
+            for letter in self.letters:
+                self.light_letter(letter)
+            for brightness in range(255):
+                self.lights.set_brightness(brightness)
+                self.lights.show()
+                time.sleep(0.005)
+        self.lights.set_brightness(255)
+
+    def fade_out(self, repetitions=1):
+        for i in range(repetitions):
+            for letter in self.letters:
+                self.light_letter(letter)
+            for brightness in range(255):
+                self.lights.set_brightness(255-brightness)
+                self.lights.show()
+                time.sleep(0.005)
+        self.turn_all_off()
+        self.lights.set_brightness(255)
 
     def turn_letters_on(self):
         for letter in self.LETTER_LED:
@@ -203,10 +264,15 @@ class Wall:
     def turn_all_off(self):
         self.lights.turn_all_off()
 
+    def test_animations(self):
+        for animation in self.animations:
+            animation()
+
 def main():
     try:
         lights = lc.LEDString(count=50)
         wall = Wall(lights)
+        wall.test_animations()
         wall.run()
     finally:
         wall.running = False
