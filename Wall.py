@@ -147,7 +147,7 @@ class Wall:
             time.sleep(20)
 
     def status_is_ok(self, status):
-        strangestthings = twitter.Hashtag(text="atrangestthings")
+        strangestthings = twitter.Hashtag(text="strangestthings")
         StrangestThings = twitter.Hashtag(text="StrangestThings")
         new_enough = status.created_at_in_seconds > self.init_time
         mention_at_start = status.text.index("@") == 0
