@@ -119,10 +119,10 @@ class Wall:
                     mention = status.text.index(" ")
                     hashtag = status.text.index("#")
 
-                    #Mention will be at end of tweet e.g. "hello @user #strangestthingswall"
+                    #Mention will be at end of tweet e.g. "hello @user #strangestthings"
                     word = status.text[:at_symbol].upper().rstrip()
 
-                    #Mention will be at beginning of tweet e.g. "@user hello #strangestthingswall"
+                    #Mention will be at beginning of tweet e.g. "@user hello #strangestthings"
                     #status_is_ok also needs changing if this is used: mention_at_start check to be changed
                     #word = status.text[mention:hashtag].upper().rstrip()
 
@@ -142,11 +142,11 @@ class Wall:
             time.sleep(20)
 
     def status_is_ok(self, status):
-        strangestthingswall = twitter.Hashtag(text="strangestthingswall")
-        StrangestThingsWall = twitter.Hashtag(text="StrangestThingsWall")
+        strangestthings = twitter.Hashtag(text="atrangestthings")
+        StrangestThings = twitter.Hashtag(text="StrangestThings")
         new_enough = status.created_at_in_seconds > self.init_time
         mention_at_start = status.text.index("@") == 0
-        hashtag_present = (strangestthingswall in status.hashtags or StrangestThingsWall in status.hashtags)
+        hashtag_present = (strangestthings in status.hashtags or StrangestThings in status.hashtags)
         return new_enough and hashtag_present and not(mention_at_start)
 
     def check_blacklist(self, word):
