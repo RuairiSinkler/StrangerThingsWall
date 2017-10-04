@@ -149,9 +149,16 @@ class Wall:
     def status_is_ok(self, status):
         strangestthings = twitter.Hashtag(text="strangestthings")
         StrangestThings = twitter.Hashtag(text="StrangestThings")
+        Strangestthings = twitter.Hashtag(text="Strangestthings")
+        strangestThings = twitter.Hashtag(text="strangestThings")
+        STRANGESTTHINGS = twitter.Hashtag(text="STRANGESTTHINGS")
+        hashtags = [strangestthings, StrangestThings, Strangestthings, strangestThings, STRANGESTTHINGS]
+        hashtag_present = False
+        for hashtag in hashtags:
+            if hashtag in status.hashtags:
+                hashtag_present = True
         new_enough = status.created_at_in_seconds > self.init_time
         mention_at_start = status.text.index("@") == 0
-        hashtag_present = (strangestthings in status.hashtags or StrangestThings in status.hashtags)
         return new_enough and hashtag_present and not(mention_at_start)
 
     def check_blacklist(self, word):
