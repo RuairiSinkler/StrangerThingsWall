@@ -7,14 +7,14 @@ import twitter
 
 import neopixel as np
 import LightControl as lc
+import LED
 
 class Wall:
 
-    def __init__(self, lights):
+    def __init__(self):
 
         self.failure_text = ""
         self.init_time = int(time.time())
-        self.lights = lights
         self.queued_words = queue.Queue()
         self.running = True
         self.inputs_required = True
@@ -45,13 +45,25 @@ class Wall:
         self.animations = [self.flicker, self.trail_letters, self.twinkle, self.fade_in_and_out]
 
         self.LETTER_LED = {}
+        self.pin18 = lc.LEDString(count=config.getint("Strip Lengths", "pin18"))
+        self.pin13 = lc.LEDString(count=config.getint("Strip Lengths", "pin13"), pin=13, channel=1)
+        self.pin19 = lc.LEDString(count=config.getint("Strip Lengths", "pin19"), pin=19, channel=1)
 
         options = config.options("LED Numbers")
         for option in options:
             letter = option.upper().rstrip()
-            number = config.getint("LED Numbers", option)
+            numbers = config.get("LED Pin and Numbers", option).split(",")
+            pin = int(numbers[0])
+            number = int(numbers[1])
             #print(letter, number, type(letter), type(number))
-            self.LETTER_LED[letter] = number
+            strip = None
+            if pin == 18:
+                strip = self.pin18
+            elif pin == 13:
+                strip = self.pin13
+            elif pin == 19:
+                strip = self.pin19
+            self.LETTER_LED[letter] = LED.LED(letter, strip, number, self.LETTER_COLOUR.get(letter))
 
         self.blacklist = []
 
@@ -180,17 +192,36 @@ class Wall:
     def light_letter(self, letter):
         led = self.LETTER_LED.get(letter.upper())
         #print(led, type(led))
-        colour = self.LETTER_COLOUR.get(letter.upper())
-        self.lights.activate(led, colour)
+        led.activate()
+
+    def show(self, letter):
+        led = self.LETTER_LED.get(letter.upper())
+        # print(led, type(led))
+        led.show()
+
+    def show_all(self):
+        self.pin18.show()
+        self.pin13.show()
+        self.pin19.show()
+
+    def set_brightness_all(self, brightness):
+        self.pin18.set_brightness(brightness)
+        self.pin13.set_brightness(brightness)
+        self.pin19.set_brightness(brightness)
+
+    def turn_all_off(self):
+        self.pin18.turn_all_off()
+        self.pin13.turn_all_off()
+        self.pin19.turn_all_off()
 
     def display_word(self, word):
         letters = list(word.upper())
         for letter in letters:
             if not(letter == " "):
                 self.light_letter(letter)
-                self.lights.show()
+                self.show(letter)
             time.sleep(0.75)
-            self.lights.turn_all_off()
+            self.turn_all_off()
             time.sleep(0.25)
 
     def display_queued_word(self):
@@ -204,7 +235,7 @@ class Wall:
         for i in range(repetitions):
             self.turn_letters_on()
             time.sleep(0.2)
-            self.lights.turn_all_off()
+            self.turn_all_off()
             time.sleep(0.2)
 
     def trail_letters(self, repetitions=1):
@@ -212,30 +243,30 @@ class Wall:
             for letter in self.letters:
                 if letter != " ":
                     self.light_letter(letter)
-                    self.lights.show()
+                    self.show(letter)
                     time.sleep(0.02)
-                    self.lights.turn_all_off()
+                    self.turn_all_off()
                     time.sleep(0.02)
             for letter in reversed(self.letters):
                 if letter != " ":
                     self.light_letter(letter)
-                    self.lights.show()
+                    self.show(letter)
                     time.sleep(0.02)
-                    self.lights.turn_all_off()
+                    self.turn_all_off()
                     time.sleep(0.02)
 
     def twinkle(self, repetitions=5):
         for i in range(repetitions):
             for letter in range(0, len(self.letters), 2):
                 self.light_letter(self.letters[letter])
-            self.lights.show()
+            self.show_all()
             time.sleep(0.2)
-            self.lights.turn_all_off()
+            self.turn_all_off()
             for letter in range(1, len(self.letters), 2):
                 self.light_letter(self.letters[letter])
-            self.lights.show()
+            self.show_all()
             time.sleep(0.2)
-            self.lights.turn_all_off()
+            self.turn_all_off()
 
     def fade_in_and_out(self, repetitions=1):
         for i in range(repetitions):
@@ -247,29 +278,26 @@ class Wall:
             for letter in self.letters:
                 self.light_letter(letter)
             for brightness in range(255):
-                self.lights.set_brightness(brightness)
-                self.lights.show()
+                self.set_brightness_all(brightness)
+                self.show_all()
                 time.sleep(0.005)
-        self.lights.set_brightness(255)
+        self.set_brightness_all(255)
 
     def fade_out(self, repetitions=1):
         for i in range(repetitions):
             for letter in self.letters:
                 self.light_letter(letter)
             for brightness in range(255):
-                self.lights.set_brightness(255-brightness)
-                self.lights.show()
+                self.set_brightness_all(255-brightness)
+                self.show_all()
                 time.sleep(0.005)
         self.turn_all_off()
-        self.lights.set_brightness(255)
+        self.set_brightness_all(255)
 
     def turn_letters_on(self):
         for letter in self.LETTER_LED:
             self.light_letter(letter)
-        self.lights.show()
-
-    def turn_all_off(self):
-        self.lights.turn_all_off()
+        self.show_all()
 
     def test_animations(self):
         for animation in self.animations:
@@ -277,8 +305,7 @@ class Wall:
 
 def main():
     try:
-        lights = lc.LEDString(count=50)
-        wall = Wall(lights)
+        wall = Wall()
         wall.test_animations()
         wall.run()
     finally:
