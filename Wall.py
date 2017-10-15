@@ -13,7 +13,6 @@ class Wall:
 
     def __init__(self):
 
-        self.failure_text = ""
         self.init_time = int(time.time())
         self.queued_words = queue.Queue()
         self.running = True
@@ -128,8 +127,6 @@ class Wall:
             print("Checking Twitter")
             results = self.api.GetMentions(count=200, since_id=latest_id)
             for status in results:
-                self.failure_text = "Sorry your tweet failed because"
-                fail = False
                 print("Checking tweet: {}".format(status.text))
                 if self.status_is_ok(status):
                     at_symbol = status.text.index("@")
@@ -149,10 +146,8 @@ class Wall:
                         self.api.PostUpdate("Thank you @{}! Your message has been sent to the Upside Down!".format(status.user.screen_name), in_reply_to_status_id=status.id)
                     else:
                         print("Twitter word rejected")
-                        fail = True
                 else:
                     print("Status rejected")
-                    fail = True
                 latest_id = max(latest_id, status.id)
                 print()
             print("Twitter Check Sleeping")
