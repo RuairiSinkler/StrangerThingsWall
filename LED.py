@@ -1,9 +1,10 @@
 
 class LED:
 
-    def __init__(self, name, strip, number, colour):
+    def __init__(self, name, controller, number, colour):
         self.name = name
-        self.strip = strip
+        self.controller = controller
+        self.strip = self.controller.strip
         self.number = number
         self.colour = colour
 
