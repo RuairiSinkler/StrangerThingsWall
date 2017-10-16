@@ -14,12 +14,12 @@ class LED:
         self.activate(self.number, self.colour)
         self.show()
 
-    def activate(self, colour):
+    def activate_colour(self, colour):
         self.strip.setPixelColor(self.number, colour)
 
     def show(self):
         self.strip.show()
 
-    def light_up(self, colour):
+    def light_up_colour(self, colour):
         self.activate(self.number, colour)
         self.show()
