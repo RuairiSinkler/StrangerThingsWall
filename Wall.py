@@ -46,7 +46,7 @@ class Wall:
         self.LETTER_LED = {}
         self.pin18 = lc.LEDString(count=config.getint("Strip Lengths", "pin18"))
         self.pin12 = lc.LEDString(count=config.getint("Strip Lengths", "pin12"), pin=12)
-        self.pin13 = lc.LEDString(count=config.getint("Strip Lengths", "pin19"), pin=13, channel=1)
+        self.pin13 = lc.LEDString(count=config.getint("Strip Lengths", "pin13"), pin=13, channel=1)
 
         options = config.options("LED Numbers")
         for option in options:
