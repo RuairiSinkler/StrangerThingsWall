@@ -45,8 +45,7 @@ class Wall:
 
         self.LETTER_LED = {}
         self.pin18 = lc.LEDString(count=config.getint("Strip Lengths", "pin18"))
-        self.pin12 = lc.LEDString(count=config.getint("Strip Lengths", "pin12"), pin=12)
-        self.pin13 = lc.LEDString(count=config.getint("Strip Lengths", "pin13"), pin=13, channel=1)
+        self.pin19 = lc.LEDString(count=config.getint("Strip Lengths", "pin19"), pin=19, channel=1)
 
         options = config.options("LED Numbers")
         for option in options:
@@ -58,10 +57,8 @@ class Wall:
             strip = None
             if pin == 18:
                 strip = self.pin18
-            elif pin == 12:
-                strip = self.pin12
-            elif pin == 13:
-                strip = self.pin13
+            elif pin == 19:
+                strip = self.pin19
             self.LETTER_LED[letter] = LED.LED(letter, strip, number, self.LETTER_COLOUR.get(letter))
 
         self.blacklist = []
@@ -196,18 +193,15 @@ class Wall:
 
     def show_all(self):
         self.pin18.show()
-        self.pin12.show()
-        self.pin13.show()
+        self.pin19.show()
 
     def set_brightness_all(self, brightness):
         self.pin18.set_brightness(brightness)
-        self.pin12.set_brightness(brightness)
-        self.pin13.set_brightness(brightness)
+        self.pin19.set_brightness(brightness)
 
     def turn_all_off(self):
         self.pin18.turn_all_off()
-        self.pin12.turn_all_off()
-        self.pin13.turn_all_off()
+        self.pin19.turn_all_off()
 
     def display_word(self, word):
         letters = list(word.upper())
