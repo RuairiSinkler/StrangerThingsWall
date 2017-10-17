@@ -302,7 +302,7 @@ class Wall:
 
     def test_animations(self):
         for animation in self.animations:
-            print(str(animation))
+            print(animation.__name__)
             animation()
 
 def main():
