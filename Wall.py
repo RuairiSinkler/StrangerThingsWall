@@ -94,14 +94,14 @@ class Wall:
                 self.words.append(word)
 
         #Twitter setup
-        consumer_key = config.get("Twitter", "consumer_key")
-        consumer_secret = config.get("Twitter", "consumer_secret")
-        access_token = config.get("Twitter", "access_token")
-        access_token_secret = config.get("Twitter", "access_token_secret")
-        self.api = twitter.Api(consumer_key=consumer_key,
-                               consumer_secret=consumer_secret,
-                               access_token_key=access_token,
-                               access_token_secret=access_token_secret,
+        self.consumer_key = config.get("Twitter", "consumer_key")
+        self.consumer_secret = config.get("Twitter", "consumer_secret")
+        self.access_token = config.get("Twitter", "access_token")
+        self.access_token_secret = config.get("Twitter", "access_token_secret")
+        self.api = twitter.Api(consumer_key=self.consumer_key,
+                               consumer_secret=self.consumer_secret,
+                               access_token_key=self.access_token,
+                               access_token_secret=self.access_token_secret,
                                sleep_on_rate_limit=True)
 
 
@@ -158,12 +158,14 @@ class Wall:
                 print("Twitter Check Sleeping")
                 time.sleep(20)
             except Exception as e:
-                if isinstance(e, ConnectionError):
-                    print("Error getting tweets, retrying in 60 seconds")
-                    time.sleep(60)
-                else:
-                    print(type(e).__name__)
-                    raise e
+                print("Error getting tweets, retrying in 60 seconds")
+                self.api = twitter.Api(consumer_key=self.consumer_key,
+                                       consumer_secret=self.consumer_secret,
+                                       access_token_key=self.access_token,
+                                       access_token_secret=self.access_token_secret,
+                                       sleep_on_rate_limit=True)
+                time.sleep(60)
+
 
     def status_is_ok(self, status):
         strangestthings = twitter.Hashtag(text="strangestthings")
