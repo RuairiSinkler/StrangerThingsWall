@@ -157,7 +157,10 @@ class Wall:
                     print()
                 print("Twitter Check Sleeping")
                 time.sleep(20)
-            except twitter.socket.gaierror:
+            except Exception as e:
+                print(e)
+                print(e.__doc__)
+                print(e.message)
                 print("Error getting tweets, retrying in 60 seconds")
                 time.sleep(60)
 
