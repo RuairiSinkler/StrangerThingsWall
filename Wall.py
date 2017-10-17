@@ -157,7 +157,14 @@ class Wall:
                     print()
                 print("Twitter Check Sleeping")
                 time.sleep(20)
-            except ConnectionError:
+            except Exception as e:
+                print(type(e).__name__)
+                print()
+                print(e.__class__.__name__)
+                print()
+                #print(e)
+                #print(e.__doc__)
+                #print(e.message)
                 print("Error getting tweets, retrying in 60 seconds")
                 time.sleep(60)
 
