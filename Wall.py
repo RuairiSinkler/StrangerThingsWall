@@ -158,6 +158,10 @@ class Wall:
                 print("Twitter Check Sleeping")
                 time.sleep(20)
             except Exception as e:
+                print(type(e).__name__)
+                print()
+                print(e.__class__.__name__)
+                print()
                 #print(e)
                 #print(e.__doc__)
                 #print(e.message)
