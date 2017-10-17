@@ -162,6 +162,7 @@ class Wall:
                     print("Error getting tweets, retrying in 60 seconds")
                     time.sleep(60)
                 else:
+                    print(type(e).__name__)
                     raise e
 
     def status_is_ok(self, status):
