@@ -159,11 +159,11 @@ class Wall:
                 time.sleep(20)
             except Exception as e:
                 print("Error getting tweets, retrying in 60 seconds")
-                self.api = twitter.Api(consumer_key=self.consumer_key,
-                                       consumer_secret=self.consumer_secret,
-                                       access_token_key=self.access_token,
-                                       access_token_secret=self.access_token_secret,
-                                       sleep_on_rate_limit=True)
+                #self.api = twitter.Api(consumer_key=self.consumer_key,
+                                       #consumer_secret=self.consumer_secret,
+                                       #access_token_key=self.access_token,
+                                       #access_token_secret=self.access_token_secret,
+                                       #sleep_on_rate_limit=True)
                 time.sleep(60)
 
 
