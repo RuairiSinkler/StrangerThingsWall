@@ -158,15 +158,11 @@ class Wall:
                 print("Twitter Check Sleeping")
                 time.sleep(20)
             except Exception as e:
-                print(type(e).__name__)
-                print()
-                print(e.__class__.__name__)
-                print()
-                #print(e)
-                #print(e.__doc__)
-                #print(e.message)
-                print("Error getting tweets, retrying in 60 seconds")
-                time.sleep(60)
+                if e.isinstance(ConnectionError):
+                    print("Error getting tweets, retrying in 60 seconds")
+                    time.sleep(60)
+                else:
+                    raise e
 
     def status_is_ok(self, status):
         strangestthings = twitter.Hashtag(text="strangestthings")
