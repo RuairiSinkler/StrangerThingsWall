@@ -158,9 +158,9 @@ class Wall:
                 print("Twitter Check Sleeping")
                 time.sleep(20)
             except Exception as e:
-                print(e)
-                print(e.__doc__)
-                print(e.message)
+                #print(e)
+                #print(e.__doc__)
+                #print(e.message)
                 print("Error getting tweets, retrying in 60 seconds")
                 time.sleep(60)
 
