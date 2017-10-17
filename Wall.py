@@ -61,6 +61,13 @@ class Wall:
                 strip = self.pin12
             self.LETTER_LED[letter] = LED.LED(letter, strip, number, self.LETTER_COLOUR.get(letter))
 
+        #q = self.LETTER_LED.get("Q")
+        #i = self.LETTER_LED.get("I")
+        #strip = i.strip
+        #self.top_row = [x for x in range(0, q)]
+        #self.middle_row = [x for x in range(i, q - 1, -1)]
+        #self.bottom_row = [x for x in range(i + 1, strip.numPixels + 1)]
+
         self.blacklist = []
 
         try:
@@ -121,34 +128,38 @@ class Wall:
     def get_twitter_inputs(self):
         latest_id = 0
         while True:
-            print("Checking Twitter")
-            results = self.api.GetMentions(count=200, since_id=latest_id)
-            for status in results:
-                print("Checking tweet: {}".format(status.text))
-                if self.status_is_ok(status):
-                    at_symbol = status.text.index("@")
-                    mention = status.text.index(" ")
-                    hashtag = status.text.index("#")
+            try:
+                print("Checking Twitter")
+                results = self.api.GetMentions(count=200, since_id=latest_id)
+                for status in results:
+                    print("Checking tweet: {}".format(status.text))
+                    if self.status_is_ok(status):
+                        at_symbol = status.text.index("@")
+                        mention = status.text.index(" ")
+                        hashtag = status.text.index("#")
 
-                    #Mention will be at end of tweet e.g. "hello @user #strangestthings"
-                    word = status.text[:at_symbol].upper().rstrip()
+                        #Mention will be at end of tweet e.g. "hello @user #strangestthings"
+                        word = status.text[:at_symbol].upper().rstrip()
 
-                    #Mention will be at beginning of tweet e.g. "@user hello #strangestthings"
-                    #status_is_ok also needs changing if this is used: mention_at_start check to be changed
-                    #word = status.text[mention:hashtag].upper().rstrip()
+                        #Mention will be at beginning of tweet e.g. "@user hello #strangestthings"
+                        #status_is_ok also needs changing if this is used: mention_at_start check to be changed
+                        #word = status.text[mention:hashtag].upper().rstrip()
 
-                    if self.word_is_ok(word):
-                        print("Twitter word added to queue: {}".format(word))
-                        self.queued_words.put(word)
-                        self.api.PostUpdate("Thank you @{}! Your message has been sent to the Upside Down!".format(status.user.screen_name), in_reply_to_status_id=status.id)
+                        if self.word_is_ok(word):
+                            print("Twitter word added to queue: {}".format(word))
+                            self.queued_words.put(word)
+                            self.api.PostUpdate("Thank you @{}! Your message has been sent to the Upside Down!".format(status.user.screen_name), in_reply_to_status_id=status.id)
+                        else:
+                            print("Twitter word rejected")
                     else:
-                        print("Twitter word rejected")
-                else:
-                    print("Status rejected")
-                latest_id = max(latest_id, status.id)
-                print()
-            print("Twitter Check Sleeping")
-            time.sleep(20)
+                        print("Status rejected")
+                    latest_id = max(latest_id, status.id)
+                    print()
+                print("Twitter Check Sleeping")
+                time.sleep(20)
+            except twitter.TwitterError:
+                print("Error getting tweets, retrying in 60 seconds")
+                time.sleep(60)
 
     def status_is_ok(self, status):
         strangestthings = twitter.Hashtag(text="strangestthings")
