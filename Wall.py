@@ -266,20 +266,20 @@ class Wall:
         for i in range(repetitions):
             for letter in self.letters:
                 self.light_letter(letter)
-            for brightness in range(0, 255, 5):
+            for brightness in range(255):
                 self.set_brightness_all(brightness)
                 self.show_all()
-                time.sleep(0.02)
+                time.sleep(0.005)
         self.set_brightness_all(255)
 
     def fade_out(self, repetitions=1):
         for i in range(repetitions):
             for letter in self.letters:
                 self.light_letter(letter)
-            for brightness in range(0, 255, 5):
+            for brightness in range(255):
                 self.set_brightness_all(255-brightness)
                 self.show_all()
-                time.sleep(0.02)
+                time.sleep(0.005)
         self.turn_all_off()
         self.set_brightness_all(255)
 
