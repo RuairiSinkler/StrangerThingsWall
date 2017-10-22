@@ -5,8 +5,8 @@ Given twitter app details for a twitter account, the program can pull @mentions 
 
 Inspired by the wall from the Stranger Things TV Show.
 
-![Stranger Things Wall](strangerthingswall.jpg)
+![Stranger Things Wall](Media/strangerthingswall.jpg)
 
 Used in the very popular [Strangest Things Club Tour!](https://twitter.com/StrangestClub)
 
-![My Wall](mywall.jpg)
+![My Wall](Media/mywall.jpg)
