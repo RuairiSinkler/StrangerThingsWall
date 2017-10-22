@@ -1,6 +1,12 @@
 # StrangerThingsWall
-Program for a Raspberry Pi to control LED's to spell out words when assigned to a letter each.
+Raspberry Pi project to spell out words with lights on an alphabet wall.
 
-Aim is for LED's to be arranged on a wall like the one from the Stranger Things TV Show.
+Given twitter app details for a twitter account, the program can pull @mentions of the account. It will then run these through a few test (only letters, nothing on blacklist included, has one of the supplied hashtags) and can the display a tweeted message as well.
+
+Inspired by the wall from the Stranger Things TV Show.
 
 ![Stranger Things Wall](strangerthingswall.jpg)
+
+Used in the very popular [Strangest Things Club Tour!](https://twitter.com/StrangestClub)
+
+![My Wall](mywall.jpg)
