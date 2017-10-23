@@ -93,6 +93,12 @@ class Wall:
             if self.word_is_ok(word):
                 self.words.append(word)
 
+        self.hashtags = []
+        hashtags = config.get("Words", "hashtags").split(",")
+        for hashtag in hashtags:
+            hashtag = hashtag.rstrip()
+            self.hashtags.append(twitter.Hashtag(text=hashtag))
+
         #Twitter setup
         consumer_key = config.get("Twitter", "consumer_key")
         consumer_secret = config.get("Twitter", "consumer_secret")
@@ -163,14 +169,14 @@ class Wall:
 
 
     def status_is_ok(self, status):
-        strangestthings = twitter.Hashtag(text="strangestthings")
-        StrangestThings = twitter.Hashtag(text="StrangestThings")
-        Strangestthings = twitter.Hashtag(text="Strangestthings")
-        strangestThings = twitter.Hashtag(text="strangestThings")
-        STRANGESTTHINGS = twitter.Hashtag(text="STRANGESTTHINGS")
-        hashtags = [strangestthings, StrangestThings, Strangestthings, strangestThings, STRANGESTTHINGS]
+        #strangestthings = twitter.Hashtag(text="strangestthings")
+        #StrangestThings = twitter.Hashtag(text="StrangestThings")
+        #Strangestthings = twitter.Hashtag(text="Strangestthings")
+        #strangestThings = twitter.Hashtag(text="strangestThings")
+        #STRANGESTTHINGS = twitter.Hashtag(text="STRANGESTTHINGS")
+        #hashtags = [strangestthings, StrangestThings, Strangestthings, strangestThings, STRANGESTTHINGS]
         hashtag_present = False
-        for hashtag in hashtags:
+        for hashtag in self.hashtags:
             if hashtag in status.hashtags:
                 hashtag_present = True
         new_enough = status.created_at_in_seconds > self.init_time
