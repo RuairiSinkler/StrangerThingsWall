@@ -9,7 +9,7 @@ Inspired by the wall from the Stranger Things TV Show.
 
 Used in the very popular [Strangest Things Club Tour!](https://twitter.com/StrangestClub)
 
-
+<img src="Media/Stranger Things Wall Sign.jpg" width=500 alt="Stranger Things Wall"/>
 
 Here's a picture video of the final product in action:
 
